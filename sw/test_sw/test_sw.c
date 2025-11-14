@@ -16,10 +16,10 @@ int main()
   uart_send("Hello world!\n", 13); // 13 is a number of chars sent: 12 + "\n" 
   uart_wait_tx_done();
 
-  set_pin_function(31, FUNC_GPIO);
-  set_gpio_pin_direction(31, DIR_OUT);
+  set_pin_function(8, FUNC_GPIO);
+  set_gpio_pin_direction(8, DIR_OUT);
 
-  set_gpio_pin_value(31, 0);
+  set_gpio_pin_value(8, 0);
 
   while(1) {
 
@@ -33,7 +33,7 @@ int main()
       #endif
     }
 
-    set_gpio_pin_value(31, 1);
+    set_gpio_pin_value(8, 1);
 
     for (int i = 0; i < LED_DELAY; i++) {
       //wait some time
@@ -44,7 +44,7 @@ int main()
       #endif
     }
 
-    set_gpio_pin_value(31, 0);
+    set_gpio_pin_value(8, 0);
     
   }
 }
