@@ -1,5 +1,5 @@
 # and don't touch the rest unless you know what you're doing.
-CROSS_COMPILE ?= /tools/riscv/bin/riscv64-unknown-elf-
+CROSS_COMPILE ?= /opt/riscv/bin/riscv64-unknown-elf-
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(patsubst %/,%,$(dir $(mkfile_path)))
 
@@ -11,7 +11,7 @@ SIZE    =   $(CROSS_COMPILE)size
 
 DFLAGS  =
 
-ARCH = -march=rv32imc -mabi=ilp32
+ARCH = -march=rv32imczicsr -mabi=ilp32
 
 # Board support
 BSP           = \ #board_support

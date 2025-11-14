@@ -24,7 +24,7 @@ module pulpino_arty_a7
 
   input [3:0] btn,
 
-  inout [7:0] ja,
+  // inout [7:0] ja,
   // inout [7:0] jb,
   // inout [7:0] jc,
   // inout [7:0] jd,
@@ -86,7 +86,13 @@ module pulpino_arty_a7
   output sda_pup,
 
   //ck_ioa
-  input ck_rst
+
+  input logic ck_rst,
+
+  input logic tck_i,
+  input logic tms_i,
+  input logic tdi_i,
+  output logic tdo_o
 
 );
 
@@ -236,22 +242,8 @@ module pulpino_arty_a7
 
 
   // JTAG signals +
-  logic tck_i;
   logic trstn_i;
-  logic tms_i;
-  logic tdi_i;
-  logic tdo_o;
-
-  assign tck_i   = ja[3];
-  assign trstn_i = ja[4];
-  assign tms_i   = ja[0];
-  assign tdi_i   = ja[1];
-  assign ja[2]   = tdo_o;
-  
-  assign ja[5] = '0;
-  assign ja[6] = '0;
-  assign ja[7] = '0;
-
+  assign trstn_i = '1;
 
 pulpino_top
   #(
@@ -271,7 +263,7 @@ pulpino_top
     .clk_sel_i        (1'b0),
     .clk_standalone_i (1'b0),
     .testmode_i       (1'b0),
-    .fetch_enable_i   (1'b1),
+    .fetch_enable_i   (sw[0]),
     .scan_enable_i    (1'b0),
 
     //SPI Slave

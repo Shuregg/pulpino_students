@@ -216,6 +216,17 @@ set_property -dict { PACKAGE_PIN C2    IOSTANDARD LVCMOS33 } [get_ports { ck_rst
 #set_property -dict { PACKAGE_PIN A15   IOSTANDARD LVCMOS33     } [get_ports { isns0v95_p }]; #IO_L8P_T1_AD10P_15 Sch=ad_p[10]
 
 
+#set_property -dict { PACKAGE_PIN E15   IOSTANDARD LVCMOS33 } [get_ports { trstn_i }]; #IO_L11P_T1_SRCC_15 Sch=jb_p[1]
+set_property -dict { PACKAGE_PIN E16   IOSTANDARD LVCMOS33 } [get_ports { tdi_i }]; #IO_L11N_T1_SRCC_15 Sch=jb_n[1]
+set_property -dict { PACKAGE_PIN D15   IOSTANDARD LVCMOS33 } [get_ports { tck_i }]; #IO_L12P_T1_MRCC_15 Sch=jb_p[2]
+set_property -dict { PACKAGE_PIN C15   IOSTANDARD LVCMOS33 } [get_ports { tms_i }]; #IO_L12N_T1_MRCC_15 Sch=jb_n[2]
+set_property -dict { PACKAGE_PIN J17   IOSTANDARD LVCMOS33 } [get_ports { tdo_o }]; #IO_L23P_T3_FOE_B_15 Sch=jb_p[3]
+#set_property -dict { PACKAGE_PIN J18   IOSTANDARD LVCMOS33 } [get_ports { jb_5 }]; #IO_L23N_T3_FWE_B_15 Sch=jb_n[3]
+#set_property -dict { PACKAGE_PIN K15   IOSTANDARD LVCMOS33 } [get_ports { jb_6 }]; #IO_L24P_T3_RS1_15 Sch=jb_p[4]
+#set_property -dict { PACKAGE_PIN J15   IOSTANDARD LVCMOS33 } [get_ports { jb_7 }]; #IO_L24N_T3_RS0_15 Sch=jb_n[4]
 
+create_clock -period 40.000 -name tck      [get_nets {tck_i}]
 
-set_property CLOCK_DEDICATED_ROUTE FALSE [get_nets ja_IBUF[3]]
+set_clock_groups -asynchronous \
+                 -group { sys_clk_pin } \
+                 -group { tck }

@@ -1,5 +1,5 @@
 # and don't touch the rest unless you know what you're doing.
-CROSS_COMPILE ?= /tools/riscv/bin/riscv64-unknown-elf-
+CROSS_COMPILE ?= /opt/riscv/bin/riscv64-unknown-elf-
 mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
 current_dir := $(patsubst %/,%,$(dir $(mkfile_path)))
 

@@ -17,6 +17,22 @@
 //#include <utils.h>
 #include <pulpino.h>
 
+void jump_and_start(volatile int *ptr)
+{
+#ifdef __riscv__
+  asm("jalr x0, %0\n"
+      "nop\n"
+      "nop\n"
+      "nop\n"
+      : : "r" (ptr) );
+#else
+  asm("l.jr\t%0\n"
+      "l.nop\n"
+      "l.nop\n"
+      "l.nop\n"
+      : : "r" (ptr) );
+#endif
+}
 
 
 int main()
@@ -55,19 +71,3 @@ int main()
 
 
 
-void jump_and_start(volatile int *ptr)
-{
-#ifdef __riscv__
-  asm("jalr x0, %0\n"
-      "nop\n"
-      "nop\n"
-      "nop\n"
-      : : "r" (ptr) );
-#else
-  asm("l.jr\t%0\n"
-      "l.nop\n"
-      "l.nop\n"
-      "l.nop\n"
-      : : "r" (ptr) );
-#endif
-}

@@ -22,8 +22,8 @@
 #
 #*****************************************************************************************
 
-set target_board "digilent_nexys_a7_100t"
-#set target_board "digilent_arty_a7_35t"
+#set target_board "digilent_nexys_a7_100t"
+set target_board "digilent_arty_a7_35t"
 
 # Set the reference directory for source file relative paths (by default the value is script directory path)
 set origin_dir "."
