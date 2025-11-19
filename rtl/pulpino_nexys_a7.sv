@@ -8,10 +8,14 @@ module pulpino_nexys_a7
   input  logic [15:0] sw,
   output logic [15:0] led,
 
-  inout  logic [7:0]  ja,
-
   output logic        uart_rxd_out,
-  input  logic        uart_txd_in
+  input  logic        uart_txd_in,
+
+  input logic tck_i,
+  input logic tms_i,
+  input logic tdi_i,
+  output logic tdo_o
+
 );
 
   // Clock and reset +
@@ -113,10 +117,10 @@ module pulpino_nexys_a7
   logic [31:0] gpio_dir;
 
 
-  assign gpio_in[15:0] = sw;
-  assign gpio_in[31:16] = '0;
+  assign gpio_in[31:16] = sw;
+  assign gpio_in[15:0] = '0;
 
-  assign led = gpio_out[31:16];
+  assign led = gpio_out[15:0];
 
 
   // Example for gpio ports
@@ -144,24 +148,8 @@ module pulpino_nexys_a7
   // assign ck_io7 = (gpio_dir[31] == GPIO_DIR_OUT) ? gpio_out[31] : 1'bz;
   // assign gpio_in[31] = ck_io7;
 
-
-  // JTAG signals +
-  logic tck_i;
   logic trstn_i;
-  logic tms_i;
-  logic tdi_i;
-  logic tdo_o;
-
-  assign tck_i   = ja[3];
-  assign trstn_i = ja[4];
-  assign tms_i   = ja[0];
-  assign tdi_i   = ja[1];
-  assign ja[2]   = tdo_o;
-
-  assign ja[5] = '0;
-  assign ja[6] = '0;
-  assign ja[7] = '0;
-
+  assign trstn_i = '1;
 
 
 pulpino_top
