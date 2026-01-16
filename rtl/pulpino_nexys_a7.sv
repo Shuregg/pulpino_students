@@ -14,7 +14,14 @@ module pulpino_nexys_a7
   input logic tck_i,
   input logic tms_i,
   input logic tdi_i,
-  output logic tdo_o
+  output logic tdo_o,
+
+  output logic qspi_clk,
+  output logic qspi_cs,
+  inout        qspi_io0,
+  inout        qspi_io1,
+  inout        qspi_io2,
+  inout        qspi_io3
 
 );
 
@@ -74,13 +81,92 @@ module pulpino_nexys_a7
   logic       spi_master_sdi2_i;
   logic       spi_master_sdi3_i;
 
+  assign qspi_clk = spi_master_clk_o;
+  assign qspi_cs = spi_master_csn0_o;
 
-  assign spi_master_sdi0_i = 1'b0;
-  assign spi_master_sdi1_i = 1'b0;
-  assign spi_master_sdi2_i = 1'b0;
-  assign spi_master_sdi3_i = 1'b0;
+  localparam SPI_STD     = 2'b00;
+  localparam SPI_QUAD_TX = 2'b01;
+  localparam SPI_QUAD_RX = 2'b10;
+
+  // For reference
+  // always_comb begin
+  //   case (spi_master_mode_o)
+  //     SPI_QUAD_TX: begin
+  //       qspi_io0 = spi_master_sdo0_o;
+  //       qspi_io1 = spi_master_sdo1_o;
+  //       qspi_io2 = spi_master_sdo2_o;
+  //       qspi_io3 = spi_master_sdo3_o;
+  //       spi_master_sdi0_i = '0;
+  //       spi_master_sdi1_i = '0;
+  //       spi_master_sdi2_i = '0;
+  //       spi_master_sdi3_i = '0;
+  //     end
+  //     SPI_QUAD_RX: begin
+  //       qspi_io0 = 'z;
+  //       qspi_io1 = 'z;
+  //       qspi_io2 = 'z;
+  //       qspi_io3 = 'z;
+  //       spi_master_sdi0_i = qspi_io0;
+  //       spi_master_sdi1_i = qspi_io1;
+  //       spi_master_sdi2_i = qspi_io2;
+  //       spi_master_sdi3_i = qspi_io3;
+  //     end
+  //     SPI_STD: begin
+  //       qspi_io0 = spi_master_sdo0_o;
+  //       qspi_io1 = 'z;
+  //       qspi_io2 = '1;
+  //       qspi_io3 = '1;
+  //       spi_master_sdi0_i = qspi_io1;
+  //       spi_master_sdi1_i = '0;
+  //       spi_master_sdi2_i = '0;
+  //       spi_master_sdi3_i = '0;
+  //     end
+  //     default: begin
+  //       qspi_io0 = 'z;
+  //       qspi_io1 = 'z;
+  //       qspi_io2 = 'z;
+  //       qspi_io3 = 'z;
+  //       spi_master_sdi0_i = '0;
+  //       spi_master_sdi1_i = '0;
+  //       spi_master_sdi2_i = '0;
+  //       spi_master_sdi3_i = '0;
+  //     end
+  //   endcase
+  // end
 
 
+
+  assign qspi_io0 = (spi_master_mode_o == SPI_QUAD_TX) ? spi_master_sdo0_o
+                  : (spi_master_mode_o == SPI_QUAD_RX) ? 'z
+                  :                     /*SPI_STD*/      spi_master_sdo0_o;
+
+  assign qspi_io1 = (spi_master_mode_o == SPI_QUAD_TX) ? spi_master_sdo1_o
+                  : (spi_master_mode_o == SPI_QUAD_RX) ? 'z
+                  :                     /*SPI_STD*/      'z;
+
+  assign qspi_io2 = (spi_master_mode_o == SPI_QUAD_TX) ? spi_master_sdo2_o
+                  : (spi_master_mode_o == SPI_QUAD_RX) ? 'z
+                  :                     /*SPI_STD*/      '1;
+
+  assign qspi_io3 = (spi_master_mode_o == SPI_QUAD_TX) ? spi_master_sdo3_o
+                  : (spi_master_mode_o == SPI_QUAD_RX) ? 'z
+                  :                     /*SPI_STD*/      '1;
+
+  assign spi_master_sdi0_i = (spi_master_mode_o == SPI_QUAD_TX) ? '0
+                           : (spi_master_mode_o == SPI_QUAD_RX) ? qspi_io0
+                           :                     /*SPI_STD*/      qspi_io1;
+
+  assign spi_master_sdi1_i = (spi_master_mode_o == SPI_QUAD_TX) ? '0
+                           : (spi_master_mode_o == SPI_QUAD_RX) ? qspi_io1
+                           :                     /*SPI_STD*/      '0;
+
+  assign spi_master_sdi2_i = (spi_master_mode_o == SPI_QUAD_TX) ? '0
+                           : (spi_master_mode_o == SPI_QUAD_RX) ? qspi_io2
+                           :                     /*SPI_STD*/      '0;
+
+  assign spi_master_sdi3_i = (spi_master_mode_o == SPI_QUAD_TX) ? '0
+                           : (spi_master_mode_o == SPI_QUAD_RX) ? qspi_io3
+                           :                     /*SPI_STD*/      '0;
 
   // I2C +
   logic scl_pad_i;
