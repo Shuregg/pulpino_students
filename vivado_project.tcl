@@ -229,6 +229,14 @@ set files [list \
  [file normalize "${origin_dir}/rtl/instr_ram_wrap.sv"] \
  [file normalize "${origin_dir}/rtl/periph_bus_wrap.sv"] \
  [file normalize "${origin_dir}/rtl/peripherals.sv"] \
+ [file normalize "${origin_dir}/rtl/aes_wrap.sv"] \
+ [file normalize "${origin_dir}/../aes/src/rtl/aes.v"] \
+ [file normalize "${origin_dir}/../aes/src/rtl/aes_core.v"] \
+ [file normalize "${origin_dir}/../aes/src/rtl/aes_encipher_block.v"] \
+ [file normalize "${origin_dir}/../aes/src/rtl/aes_decipher_block.v"] \
+ [file normalize "${origin_dir}/../aes/src/rtl/aes_key_mem.v"] \
+ [file normalize "${origin_dir}/../aes/src/rtl/aes_sbox.v"] \
+ [file normalize "${origin_dir}/../aes/src/rtl/aes_inv_sbox.v"] \
  [file normalize "${origin_dir}/rtl/components/pulp_clock_inverter.sv"] \
  [file normalize "${origin_dir}/rtl/components/pulp_clock_mux2.sv"] \
  [file normalize "${origin_dir}/rtl/pulpino_top.sv"] \
@@ -310,8 +318,8 @@ set files [list \
  [file normalize "${origin_dir}/submodules/riscv/riscv_prefetch_buffer.sv"] \
  [file normalize "${origin_dir}/submodules/riscv/riscv_register_file.sv"] \
  [file normalize "${origin_dir}/rtl/xilinx_spram.v"] \
- [file normalize "${origin_dir}/sw/test_sw_emb_text.dat"] \
- [file normalize "${origin_dir}/sw/test_sw_emb_data.dat"] \
+ [file normalize "${origin_dir}/sw/aes_demo_emb_text.dat"] \
+ [file normalize "${origin_dir}/sw/aes_demo_emb_data.dat"] \
  [file normalize "${origin_dir}/sw/boot_code.dat"] \
 ]
 
@@ -690,6 +698,11 @@ set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
 set file "$origin_dir/rtl/peripherals.sv"
+set file [file normalize $file]
+set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
+set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
+
+set file "$origin_dir/rtl/aes_wrap.sv"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
@@ -1112,12 +1125,12 @@ set_property -name "file_type" -value "SystemVerilog" -objects $file_obj
 
 
 
-set file "$origin_dir/sw/test_sw_emb_text.dat"
+set file "$origin_dir/sw/aes_demo_emb_text.dat"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "Data Files" -objects $file_obj
 
-set file "$origin_dir/sw/test_sw_emb_data.dat"
+set file "$origin_dir/sw/aes_demo_emb_data.dat"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "file_type" -value "Data Files" -objects $file_obj
